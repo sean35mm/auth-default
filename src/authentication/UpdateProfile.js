@@ -1,14 +1,15 @@
-import React, { useRef, useState } from "react";
-import { Form, Button, Card, Alert } from "react-bootstrap";
-import { useAuth } from "../contexts/AuthContext";
-import { Link, useHistory } from "react-router-dom";
+import React, { useRef, useState } from 'react';
+import { Form, Button, Card, Alert } from 'react-bootstrap';
+import { useAuth } from '../contexts/AuthContext';
+import { Link, useHistory } from 'react-router-dom';
+import CenteredContainer from './CenteredContainer';
 
 export default function UpdateProfile() {
 	const emailRef = useRef();
 	const passwordRef = useRef();
 	const passwordConfirmRef = useRef();
 	const { currentUser, updatePassword, updateEmail } = useAuth();
-	const [error, setError] = useState("");
+	const [error, setError] = useState('');
 	const [loading, setLoading] = useState(false);
 	const history = useHistory();
 
@@ -16,12 +17,12 @@ export default function UpdateProfile() {
 		e.preventDefault();
 
 		if (passwordRef.current.value !== passwordConfirmRef.current.value) {
-			return setError("Passwords do not match");
+			return setError('Passwords do not match');
 		}
 
 		const promises = [];
 		setLoading(true);
-		setError("");
+		setError('');
 
 		if (emailRef.current.value !== currentUser.email) {
 			promises.push(updateEmail(emailRef.current.value));
@@ -32,10 +33,10 @@ export default function UpdateProfile() {
 
 		Promise.all(promises)
 			.then(() => {
-				history.push("/");
+				history.push('/user');
 			})
 			.catch(() => {
-				setError("Failed to update account");
+				setError('Failed to update account');
 			})
 			.finally(() => {
 				setLoading(false);
@@ -43,7 +44,7 @@ export default function UpdateProfile() {
 	}
 
 	return (
-		<>
+		<CenteredContainer>
 			<Card>
 				<Card.Body>
 					<h2 className='text-center mb-4'>Update Profile</h2>
@@ -78,6 +79,6 @@ export default function UpdateProfile() {
 			<div className='w-100 text-center mt-2'>
 				<Link to='/'>Cancel</Link>
 			</div>
-		</>
+		</CenteredContainer>
 	);
 }
